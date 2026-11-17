@@ -61,6 +61,9 @@
         } @else if (d.eligibleForSocial) {
           <span class="dk-tag dk-tinted doc-detail__posted" data-tint="pink"><dk-icon name="megaphone" />The Marketing Assistant can use this for a post</span>
         }
+        @if (d.referenceForImages) {
+          <span class="dk-tag dk-tinted doc-detail__posted" data-tint="blue"><dk-icon name="sparkles" />Reference for the Marketing Assistant's new images</span>
+        }
 
         @if (editing()) {
           <form class="doc-detail__edit dk-card" (ngSubmit)="saveEdit()">
@@ -69,6 +72,9 @@
             <label>Description<textarea name="description" rows="3" [(ngModel)]="editForm.description" [disabled]="saving()"></textarea></label>
             @if (surface() === 'image' || surface() === 'video') {
               <label class="doc-detail__check"><input type="checkbox" name="eligible" [(ngModel)]="editForm.eligibleForSocial" [disabled]="saving()" />The Marketing Assistant can pick this for a post</label>
+            }
+            @if (surface() === 'image') {
+              <label class="doc-detail__check"><input type="checkbox" name="reference" [(ngModel)]="editForm.referenceForImages" [disabled]="saving()" />Use as a reference when the Marketing Assistant makes new images. Name it after the product ("16Ahead Find - reference"), or "16Ahead logo - reference" for every product.</label>
             }
             <div class="doc-detail__actions">
               <button type="submit" class="dk-btn dk-btn--primary" [disabled]="saving()" appWriteAction="save this document">{{ saving() ? 'Saving…' : 'Save' }}</button>

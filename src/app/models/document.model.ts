@@ -27,6 +27,8 @@ export interface Document {
   lastPostedAt?: string | null;
   lastPostedPlatforms?: string[];
   eligibleForSocial?: boolean;
+  /** The Marketing Assistant sends it to Image Creator when she makes an image for the product its title names. */
+  referenceForImages?: boolean;
   /** "Written from" (design 3a): what 16Ahead drew on for a first draft. */
   sources?: { kind: string; label: string; detail: string }[];
 }

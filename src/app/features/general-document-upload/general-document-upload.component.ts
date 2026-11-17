@@ -35,6 +35,8 @@ interface UploadRow {
   opportunityId: string;
   score: number | null;
   eligibleForSocial: boolean;
+  referenceForImages: boolean;
+  isImage: boolean;
   isMedia: boolean;
 }
 
@@ -202,6 +204,8 @@ export class GeneralDocumentUploadComponent implements OnInit, OnDestroy {
         opportunityId: '',
         score: null,
         eligibleForSocial: false,
+        referenceForImages: false,
+        isImage: preview.type === 'image',
         isMedia: preview.type === 'image' || preview.type === 'video',
       };
       if ( room <= 0 ) {
@@ -310,6 +314,17 @@ export class GeneralDocumentUploadComponent implements OnInit, OnDestroy {
     this.patch( key, { eligibleForSocial: next } );
     this.docService.updateDocument( row.documentId, { eligibleForSocial: next }, this.tenantId ).subscribe( {
       error: () => this.patch( key, { eligibleForSocial: !next } ),
+    } );
+  }
+
+  /** Reference image (Ty, 2026-11-17): used when she makes new images, never posted itself unless also marked for posts. */
+  toggleReference ( key: string ): void {
+    const row = this.row( key );
+    if ( !row?.documentId ) return;
+    const next = !row.referenceForImages;
+    this.patch( key, { referenceForImages: next } );
+    this.docService.updateDocument( row.documentId, { referenceForImages: next }, this.tenantId ).subscribe( {
+      error: () => this.patch( key, { referenceForImages: !next } ),
     } );
   }
 

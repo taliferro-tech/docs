@@ -69,7 +69,7 @@ export class DocumentDetailComponent implements OnInit {
   readonly editing = signal( false );
   readonly saving = signal( false );
   readonly playing = signal( false );
-  editForm = { title: '', topic: '', description: '', eligibleForSocial: false };
+  editForm = { title: '', topic: '', description: '', eligibleForSocial: false, referenceForImages: false };
 
   readonly doc = computed<Document | null>( () => this.store.byId( this.id() ) || this.fetched() );
   /** "Written from" (3a): what 16Ahead drew on for a first draft from New. */
@@ -226,7 +226,7 @@ export class DocumentDetailComponent implements OnInit {
     const doc = this.doc();
     if ( !doc ) return;
     this.moreOpen.set( false );
-    this.editForm = { title: doc.title || '', topic: doc.topic || '', description: doc.description || '', eligibleForSocial: doc.eligibleForSocial === true };
+    this.editForm = { title: doc.title || '', topic: doc.topic || '', description: doc.description || '', eligibleForSocial: doc.eligibleForSocial === true, referenceForImages: doc.referenceForImages === true };
     this.editing.set( true );
   }
 

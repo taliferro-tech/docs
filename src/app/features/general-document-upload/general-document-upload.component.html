@@ -41,6 +41,9 @@
             @if (row.isMedia && row.documentId) {
               <button type="button" class="dk-btn dk-btn--bg dk-btn--sm" [attr.aria-pressed]="row.eligibleForSocial" (click)="toggleSocial(row.key)"><dk-icon [name]="row.eligibleForSocial ? 'check' : 'megaphone'" />{{ row.eligibleForSocial ? 'The Marketing Assistant can use this' : 'Let the Marketing Assistant use this' }}</button>
             }
+            @if (row.isImage && row.documentId) {
+              <button type="button" class="dk-btn dk-btn--bg dk-btn--sm" [attr.aria-pressed]="row.referenceForImages" (click)="toggleReference(row.key)" title="Name it after the product, like &quot;16Ahead Find - reference&quot;, or &quot;16Ahead logo - reference&quot; for every product."><dk-icon [name]="row.referenceForImages ? 'check' : 'sparkles'" />{{ row.referenceForImages ? 'Reference for new images' : 'Use as a reference for new images' }}</button>
+            }
           </div>
         </div>
         @if (row.state === 'opportunity' && attachTo) {
