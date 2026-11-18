@@ -49,7 +49,7 @@ Thumbs.db
 *.key
 *serviceAccountKey*.json
 *service-account*.json
-.npmrc
+# Project .npmrc contains registry routing only; credentials belong in ~/.npmrc.
 
 # Firebase
 .firebase/
