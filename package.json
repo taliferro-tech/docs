@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "2026.11.17-build.2",
+  "version": "2026.11.18-build.2",
   "scripts": {
     "ng": "ng",
     "generate-version": "node scripts/generate-version.js",
@@ -15,7 +15,8 @@
     "cy:run": "cypress run",
     "typecheck:cypress": "tsc -p tsconfig.cypress.json --noEmit --pretty false",
     "e2e:app": "start-server-and-test start http://localhost:4200 cy:run",
-    "e2e": "npm run e2e:app"
+    "e2e": "npm run e2e:app",
+    "auth:ui": "npx google-artifactregistry-auth"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +33,7 @@
     "@angular/service-worker": "^19.2.25",
     "@angular/ssr": "^19.2.27",
     "@fortawesome/fontawesome-free": "^7.3.1",
-    "@taliferro/ui": "file:../../taliferro-ui",
+    "@taliferro/ui": "^1.0.0",
     "bootstrap": "^5.3.8",
     "chart.js": "^4.5.1",
     "docx": "9.6.1",
