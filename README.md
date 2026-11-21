@@ -15,19 +15,19 @@ The app is an Angular 19 standalone application backed by Firebase Authenticatio
 
 The header has four tabs: Home, Opportunities, Documents, and Knowledge. Signed out, the tabs are Home, About, and Help.
 
-| Route | Page |
-| --- | --- |
-| `/` | **Home.** Search box, quick actions, and a status overview. Signed out, it shows the public introduction. `/docs` and `/docs/landing` redirect here. |
-| `/about`, `/help`, `/ios`, `/pricing` | Public pages: About, Help, the iOS preview, and pricing (subscribe on the web through Stripe, or in the app). These are prerendered (see [SEO and public pages](#seo-and-public-pages)). |
-| `/opportunities` | RFPs 16Ahead found or you added, scored against your profile. Sub-pages: `/opportunities/inbox` (connect an RFP intake inbox), `/opportunities/:id`, `/opportunities/:id/proposal` (the proposal editor), and `/opportunities/:id/send` (review and send). |
-| `/documents`, `/documents/:id` | The document vault and a single document. |
-| `/upload` | Add files: PDFs, images, video, audio, Word files. `/upload?rfp=1` adds an RFP. |
-| `/new`, `/docs/editor/:id` | 16Ahead writes a first draft, which opens in the document editor (`.docx` import and export). |
-| `/knowledge`, `/knowledge/:id` | The Knowledge Base of reusable answers and their sources. |
-| `/knowledge/response-flow[/:id]` | Add or edit an answer. |
-| `/knowledge/save` | Save an answer to Knowledge from Find. |
-| `/get-started`, `/login`, `/auth/callback`, `/profile` | Onboarding, the sign-in hand-off, the hosted-login callback, and the profile. |
-| `/docs/success`, `/knowledge/success` | Return pages after a Stripe checkout. |
+| Route                                                  | Page                                                                                                                                                                                                                                                       |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                                    | **Home.** Search box, quick actions, and a status overview. Signed out, it shows the public introduction. `/docs` and `/docs/landing` redirect here.                                                                                                       |
+| `/about`, `/help`, `/ios`, `/pricing`                  | Public pages: About, Help, the iOS preview, and pricing (subscribe on the web through Stripe, or in the app). These are prerendered (see [SEO and public pages](#seo-and-public-pages)).                                                                   |
+| `/opportunities`                                       | RFPs 16Ahead found or you added, scored against your profile. Sub-pages: `/opportunities/inbox` (connect an RFP intake inbox), `/opportunities/:id`, `/opportunities/:id/proposal` (the proposal editor), and `/opportunities/:id/send` (review and send). |
+| `/documents`, `/documents/:id`                         | The document vault and a single document.                                                                                                                                                                                                                  |
+| `/upload`                                              | Add files: PDFs, images, video, audio, Word files. `/upload?rfp=1` adds an RFP.                                                                                                                                                                            |
+| `/new`, `/docs/editor/:id`                             | 16Ahead writes a first draft, which opens in the document editor (`.docx` import and export).                                                                                                                                                              |
+| `/knowledge`, `/knowledge/:id`                         | The Knowledge Base of reusable answers and their sources.                                                                                                                                                                                                  |
+| `/knowledge/response-flow[/:id]`                       | Add or edit an answer.                                                                                                                                                                                                                                     |
+| `/knowledge/save`                                      | Save an answer to Knowledge from Find.                                                                                                                                                                                                                     |
+| `/get-started`, `/login`, `/auth/callback`, `/profile` | Onboarding, the sign-in hand-off, the hosted-login callback, and the profile.                                                                                                                                                                              |
+| `/docs/success`, `/knowledge/success`                  | Return pages after a Stripe checkout.                                                                                                                                                                                                                      |
 
 Old addresses (`/docs/documents`, `/docs/upload`, `/docs/rfp-list`, `/docs/proposal-history`, `/docs/rfp-upload`, `/docs/pricing`, `/knowledge/pricing`) redirect to their new pages. [app.routes.ts](src/app/app.routes.ts) holds the full list.
 
@@ -39,31 +39,26 @@ Signed-in sessions resolve a tenant from the Firebase user record and attach ten
 
 ## Logos
 
-Every page uses the 16Ahead product dials from `taliferro-ui/brand/products` (copied into the build as `assets/brand/products`). Each one comes as a light and a dark file; the page renders both with `brand-mark--light` / `brand-mark--dark` and `src/styles.css` hides the one that doesn't match the theme. Don't CSS-invert the light set, because that turns the blue tick orange. Docs is `07-docs`; the in-app assistant uses `01-16ahead`. The colour logos (`public/assets/docs-color-icon.png`, `src/assets/find/entities/*`) are kept but no longer shown. This README's logo is a copy in `docs/readme/`.
+Every page uses the 16Ahead product dials from `@taliferro/ui/brand/products`. `angular.json` copies them from `node_modules/@taliferro/ui/brand/products` into the build as `assets/brand/products`. Each one comes as a light and a dark file; the page renders both with `brand-mark--light` / `brand-mark--dark` and `src/styles.css` hides the one that doesn't match the theme. Don't CSS-invert the light set, because that turns the blue tick orange. Docs is `07-docs`; the in-app assistant uses `01-16ahead`. The colour logos (`public/assets/docs-color-icon.png`, `src/assets/find/entities/*`) are kept but no longer shown. This README's logo is a copy in `docs/readme/`.
 
 ## Prerequisites
 
-- **Node.js 22** (developed on 22.13; `.nvmrc` pins it, so `nvm use` works) and npm.
+- **Node.js 22** and npm. `.nvmrc` pins the major version; use `fnm use 22` or `nvm use`.
 - **Google Chrome**, for `npm run test:ci` (Karma runs headless Chrome) and Cypress.
 - **Angular CLI 19** comes in with `npm install`; run it with `npx ng`.
 - **Firebase CLI** (`npm i -g firebase-tools`), only if you deploy. You also need access to the `taliferrotech` Firebase project; ask the project owner to add you.
-- **The `taliferro-ui` repo, checked out next to this one.** `package.json` installs `@taliferro/ui` from `file:../../taliferro-ui`, so the folders must look like this:
-
-  ```
-  corporate/
-  ├── taliferro-ui/          ← shared 16Ahead UI package
-  └── web-products/
-      └── docs/              ← this repo
-  ```
-
-  Without it, `npm install` fails.
+- **Access to the private `@taliferro/ui` package.** `package.json` declares `@taliferro/ui@^1.0.0`, and `package-lock.json` pins the installed release from Google Cloud Artifact Registry. The committed `.npmrc` routes the `@taliferro` scope to the `taliferro-ui` repository in project `taliferrotech`, region `us-central1`. Configure Google Cloud credentials for an account with Artifact Registry Reader access to that repository.
 
 ## Getting started
 
 ```bash
-npm install
+fnm use 22        # or nvm use
+npm run auth:ui
+npm ci
 npm start          # http://localhost:4200
 ```
+
+`npm run auth:ui` refreshes Artifact Registry authentication using your Google Cloud credentials and stores the token in `~/.npmrc`. Run it again before installing if authentication expires. The project's `.npmrc` contains registry routing only. Docs resolves shared models, styles, and brand assets from the installed `@taliferro/ui` package.
 
 You don't need a `.env` file or any environment variables. The local dev server and `npm run e2e` both talk to the **production** API and Firebase project (see [Configuration](#configuration)), so anything you do while signed in changes real data.
 
@@ -77,21 +72,21 @@ You can browse most pages without signing in (see [Guest mode](#guest-mode)).
 
 All configuration is compiled in from two files. Both are committed to git, `apiKey` included:
 
-| File | Used by |
-| --- | --- |
-| `src/environments/environment.ts` | `npm start`, `ng build --configuration development` |
-| `src/environments/environment.prod.ts` | `npm run build` (production) |
+| File                                   | Used by                                             |
+| -------------------------------------- | --------------------------------------------------- |
+| `src/environments/environment.ts`      | `npm start`, `ng build --configuration development` |
+| `src/environments/environment.prod.ts` | `npm run build` (production)                        |
 
 Both files currently hold the same values:
 
-| Key | Purpose |
-| --- | --- |
-| `backendURL` | Base URL for every API call (`https://api.taliferro.tech/api`). Point it at a local or staging API here. |
-| `apiKey` | Sent as `Authorization: Bearer …` to `/app-assistant` and `/document-helper`. It ships in the browser bundle, so it isn't really secret; don't copy it anywhere else, and rotate it on the API side if it leaks. |
-| `firebaseConfig` | Firebase web app config for the `taliferrotech` project (Auth, Firestore, Storage). |
-| `taliferroTenantId` | The uid that gets admin-only header items (`DocsHeaderComponent.isAdmin`). |
-| `production` | Standard Angular flag. |
-| `PLATFORM_URL`, `COMPANY_NAME`, `linkPreview` | Not referenced by the app today. |
+| Key                                           | Purpose                                                                                                                                                                                                          |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `backendURL`                                  | Base URL for every API call (`https://api.taliferro.tech/api`). Point it at a local or staging API here.                                                                                                         |
+| `apiKey`                                      | Sent as `Authorization: Bearer …` to `/app-assistant` and `/document-helper`. It ships in the browser bundle, so it isn't really secret; don't copy it anywhere else, and rotate it on the API side if it leaks. |
+| `firebaseConfig`                              | Firebase web app config for the `taliferrotech` project (Auth, Firestore, Storage).                                                                                                                              |
+| `taliferroTenantId`                           | The uid that gets admin-only header items (`DocsHeaderComponent.isAdmin`).                                                                                                                                       |
+| `production`                                  | Standard Angular flag.                                                                                                                                                                                           |
+| `PLATFORM_URL`, `COMPANY_NAME`, `linkPreview` | Not referenced by the app today.                                                                                                                                                                                 |
 
 ## Backend and services
 
@@ -105,24 +100,24 @@ X-User-Id:    <Firebase uid>
 X-User-Email: <Firebase email>
 ```
 
-| Endpoint | Used for | Service |
-| --- | --- | --- |
-| `GET/POST /docs`, `GET/PUT/DELETE /docs/:id` | Document vault CRUD | `DocService` |
-| `POST /docs/compose` | Compose a document from a brief and knowledge entries | `DocService` |
-| `GET /docs/limits` | Plan usage limits | `DocService` |
-| `POST /docs/knowledge/suggest` | Knowledge suggestions while answering | `AnswerFormComponent` |
-| `/docs/opportunities…` | RFP opportunities: list, detail, update, rescore, proposal plan, sections, send, submitted | `OpportunitiesService` |
-| `/docs/inboxes…` | RFP intake inboxes: list, create, update, test, check, Google OAuth start | `OpportunitiesService` |
-| `GET/POST /response-flows`, `GET/PUT/DELETE /response-flows/:id` | Knowledge Base / Response Flow entries | `ResponseFlowService` |
-| `POST /response-flows/from-find` | Save to Knowledge from Find (`/knowledge/save`) | `FindSaveComponent` |
-| `POST /app-assistant` | General AI assistant (bearer `apiKey`) | `OpenAiService` |
-| `POST /document-helper` | Document and proposal AI helpers (bearer `apiKey`) | `DocsOpenAiService` |
-| `GET /account/summary`, `POST /account/subscriptions/cancel` | Subscription and billing state | `AccountBillingService` |
-| `POST /billing/checkout`, `GET /billing/status`, `POST /billing/portal` | Web subscribe (Stripe Checkout), plan status, and Stripe's manage-billing portal. Access is granted by the Stripe webhook on the API side, not by the page. | `WebCheckoutService` |
-| `POST /docs/checkout[/confirm]`, `POST /knowledge/checkout[/confirm]` | Confirms a checkout on `/docs/success` and `/knowledge/success` | `DocsPurchaseFlowService` |
-| `GET/PATCH /profile`, `DELETE /account` | Profile and account deletion | `ProfileApiService` |
-| `POST /onboarding/profile`, `POST /mobile/docs/knowledge-base` | Sign-up draft hand-off | `DocsSignupDraftService` |
-| `GET /getting-started/docs` | Getting-started checklist | `GettingStartedService` |
+| Endpoint                                                                | Used for                                                                                                                                                    | Service                   |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `GET/POST /docs`, `GET/PUT/DELETE /docs/:id`                            | Document vault CRUD                                                                                                                                         | `DocService`              |
+| `POST /docs/compose`                                                    | Compose a document from a brief and knowledge entries                                                                                                       | `DocService`              |
+| `GET /docs/limits`                                                      | Plan usage limits                                                                                                                                           | `DocService`              |
+| `POST /docs/knowledge/suggest`                                          | Knowledge suggestions while answering                                                                                                                       | `AnswerFormComponent`     |
+| `/docs/opportunities…`                                                  | RFP opportunities: list, detail, update, rescore, proposal plan, sections, send, submitted                                                                  | `OpportunitiesService`    |
+| `/docs/inboxes…`                                                        | RFP intake inboxes: list, create, update, test, check, Google OAuth start                                                                                   | `OpportunitiesService`    |
+| `GET/POST /response-flows`, `GET/PUT/DELETE /response-flows/:id`        | Knowledge Base / Response Flow entries                                                                                                                      | `ResponseFlowService`     |
+| `POST /response-flows/from-find`                                        | Save to Knowledge from Find (`/knowledge/save`)                                                                                                             | `FindSaveComponent`       |
+| `POST /app-assistant`                                                   | General AI assistant (bearer `apiKey`)                                                                                                                      | `OpenAiService`           |
+| `POST /document-helper`                                                 | Document and proposal AI helpers (bearer `apiKey`)                                                                                                          | `DocsOpenAiService`       |
+| `GET /account/summary`, `POST /account/subscriptions/cancel`            | Subscription and billing state                                                                                                                              | `AccountBillingService`   |
+| `POST /billing/checkout`, `GET /billing/status`, `POST /billing/portal` | Web subscribe (Stripe Checkout), plan status, and Stripe's manage-billing portal. Access is granted by the Stripe webhook on the API side, not by the page. | `WebCheckoutService`      |
+| `POST /docs/checkout[/confirm]`, `POST /knowledge/checkout[/confirm]`   | Confirms a checkout on `/docs/success` and `/knowledge/success`                                                                                             | `DocsPurchaseFlowService` |
+| `GET/PATCH /profile`, `DELETE /account`                                 | Profile and account deletion                                                                                                                                | `ProfileApiService`       |
+| `POST /onboarding/profile`, `POST /mobile/docs/knowledge-base`          | Sign-up draft hand-off                                                                                                                                      | `DocsSignupDraftService`  |
+| `GET /getting-started/docs`                                             | Getting-started checklist                                                                                                                                   | `GettingStartedService`   |
 
 ### Firebase (`taliferrotech`)
 
@@ -139,26 +134,27 @@ The frontend is a client application. Firebase rules and the API must keep enfor
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `npm start` | Dev server on port 4200 |
-| `npm run build` | Production build to `dist/docs/browser`, including the prerendered public pages (see [SEO and public pages](#seo-and-public-pages)). It runs `generate-version` first, which **rewrites `version` in `package.json` and `public/assets/version.json`** (`YYYY.M.D-build.N`). Use `npx ng build` to build without bumping the version. |
-| `npm test` / `npm run test:ci` | Karma/Jasmine unit tests; `test:ci` runs once in headless Chrome |
-| `npm run e2e` | Starts the dev server and runs Cypress against `http://localhost:4200`. Port 4200 must be free. If you run it from VS Code's terminal and Cypress fails to launch, run `unset ELECTRON_RUN_AS_NODE` first. |
-| `npm run cy:open` | Opens Cypress interactively |
-| `npm run typecheck:cypress` | Type-checks the Cypress specs |
+| Command                        | What it does                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm start`                    | Dev server on port 4200                                                                                                                                                                                                                                                                                                               |
+| `npm run auth:ui`              | Refreshes Artifact Registry authentication before installing the private `@taliferro/ui` package; credentials are stored in `~/.npmrc`. |
+| `npm run build`                | Production build to `dist/docs/browser`, including the prerendered public pages (see [SEO and public pages](#seo-and-public-pages)). It runs `generate-version` first, which **rewrites `version` in `package.json` and `public/assets/version.json`** (`YYYY.M.D-build.N`). Use `npx ng build` to build without bumping the version. |
+| `npm test` / `npm run test:ci` | Karma/Jasmine unit tests; `test:ci` runs once in headless Chrome                                                                                                                                                                                                                                                                      |
+| `npm run e2e`                  | Starts the dev server and runs Cypress against `http://localhost:4200`. Port 4200 must be free. If you run it from VS Code's terminal and Cypress fails to launch, run `unset ELECTRON_RUN_AS_NODE` first.                                                                                                                            |
+| `npm run cy:open`              | Opens Cypress interactively                                                                                                                                                                                                                                                                                                           |
+| `npm run typecheck:cypress`    | Type-checks the Cypress specs                                                                                                                                                                                                                                                                                                         |
 
 ## SEO and public pages
 
 The build prerenders the public pages to static HTML (`outputMode: "static"` in `angular.json`), so crawlers and link previews (Slack, iMessage, LinkedIn) see real content without running JavaScript:
 
-| File | Role |
-| --- | --- |
-| [app.routes.server.ts](src/app/app.routes.server.ts) | Which routes prerender: `/`, `/about`, `/help`, `/ios`, and `/pricing`. Every other route renders in the browser only. |
-| [app.routes.ts](src/app/app.routes.ts) `data.meta` | Each public page's `<title>` and description, applied by [page-meta.ts](src/app/shared/page-meta.ts) to the title, description, Open Graph, and Twitter tags. |
-| [canonical-url.ts](src/app/shared/canonical-url.ts) | Keeps `<link rel="canonical">` on the current path. |
-| [public/sitemap.xml](public/sitemap.xml) | Lists the prerendered pages. Keep it in step with `app.routes.server.ts`. |
-| [public/robots.txt](public/robots.txt) | Blocks crawlers from the signed-in workspace routes. |
+| File                                                 | Role                                                                                                                                                          |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [app.routes.server.ts](src/app/app.routes.server.ts) | Which routes prerender: `/`, `/about`, `/help`, `/ios`, and `/pricing`. Every other route renders in the browser only.                                        |
+| [app.routes.ts](src/app/app.routes.ts) `data.meta`   | Each public page's `<title>` and description, applied by [page-meta.ts](src/app/shared/page-meta.ts) to the title, description, Open Graph, and Twitter tags. |
+| [canonical-url.ts](src/app/shared/canonical-url.ts)  | Keeps `<link rel="canonical">` on the current path.                                                                                                           |
+| [public/sitemap.xml](public/sitemap.xml)             | Lists the prerendered pages. Keep it in step with `app.routes.server.ts`.                                                                                     |
+| [public/robots.txt](public/robots.txt)               | Blocks crawlers from the signed-in workspace routes.                                                                                                          |
 
 Home prerenders its signed-out view. Code that runs on those pages must not touch `window`, `document`, or `localStorage` until it's in the browser (check `typeof window` or use `isPlatformBrowser`), or the build logs `window is not defined` while prerendering. To add a public page: add its route with `data.meta`, add it to `app.routes.server.ts` and `sitemap.xml`, and make sure it isn't blocked in `robots.txt`.
 
