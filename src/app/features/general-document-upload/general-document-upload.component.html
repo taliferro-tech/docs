@@ -17,6 +17,8 @@
   }
   @if (rfpMode && !rows().length) {
     <p class="up__lead dk-muted">Drop the RFP itself (a PDF or Word file). 16Ahead reads it, scores it against your profile and adds it to Opportunities.</p>
+  } @else if (!rows().length) {
+    <p class="up__lead dk-muted">Proposals, past work, product sheets, photos and videos. 16Ahead files each one in Documents; mark an RFP and it's read into Opportunities, or let the Marketing Assistant use a photo or video.</p>
   }
 
   <input #fileInput type="file" multiple hidden (change)="onFileSelect($event)" [accept]="rfpMode ? '.pdf,.docx,.txt' : ''" />
