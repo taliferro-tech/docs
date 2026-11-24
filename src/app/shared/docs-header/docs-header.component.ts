@@ -163,7 +163,7 @@ export function docsTabForUrl ( url: string ): DocsTabId | null {
         <button type="button" class="ah-pill ah-theme" (click)="flipTheme()" [attr.aria-label]="theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
           <dk-icon [name]="theme() === 'dark' ? 'sun' : 'moon'" /><span class="dh-theme-label">{{ theme() === 'dark' ? 'Light' : 'Dark' }}</span>
         </button>
-        <app-platform-menu [isAdmin]="isAdmin()" [isLoggedIn]="signedIn()" [userName]="userName()" [userEmail]="userEmail()" (signOut)="onSignOut()" />
+        <app-platform-menu [isAdmin]="isAdmin()" [isLoggedIn]="signedIn()" [userName]="userName()" [userEmail]="userEmail()" [userId]="userId()" (signOut)="onSignOut()" />
       </div>
     </header>
 
@@ -191,6 +191,7 @@ export class DocsHeaderComponent {
   readonly signedIn = computed( () => !!this.user() );
   readonly userName = computed( () => this.user()?.displayName || '' );
   readonly userEmail = computed( () => this.user()?.email || '' );
+  readonly userId = computed( () => this.user()?.uid || '' );
   readonly isAdmin = computed( () => this.user()?.uid === environment.taliferroTenantId );
   readonly tabs = computed( () => this.signedIn() ? APP_TABS : SIGNED_OUT_TABS );
 
